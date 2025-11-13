@@ -38,36 +38,6 @@
             font-size: 1.1em;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn.active {
-            background: #4CAF50;
-            color: white;
-        }
-
         .card-container {
             perspective: 1000px;
             margin: 0 auto 30px;
@@ -133,18 +103,7 @@
             font-size: 1.3em;
             line-height: 1.6;
             font-weight: 500;
-        }
-
-        .component-image {
-            width: 200px;
-            height: 150px;
-            margin: 20px 0;
-            background: #f0f0f0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
+            white-space: pre-line;
         }
 
         .navigation {
@@ -195,15 +154,6 @@
             font-size: 1em;
         }
 
-        ul {
-            text-align: left;
-            margin-top: 10px;
-        }
-
-        li {
-            margin: 8px 0;
-        }
-
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
@@ -228,14 +178,11 @@
         <h1>💻 Year 1 Computing Flashcards</h1>
         <p class="subtitle">Hardware, Software & Storage</p>
 
-
-
         <div class="card-container">
             <div class="flashcard" id="flashcard" onclick="flipCard()">
                 <div class="card-face card-front">
                     <div class="card-topic" id="topic">Loading...</div>
                     <div class="card-question" id="question">Loading...</div>
-                    <div id="image-container"></div>
                 </div>
                 <div class="card-face card-back">
                     <div class="card-answer" id="answer">Loading...</div>
@@ -254,178 +201,138 @@
 
     <script>
         const flashcards = [
-            // Hardware Basics
             {
                 topic: "Hardware",
-                category: "hardware",
                 question: "What is computer hardware?",
                 answer: "Hardware is the physical parts of a computer that you can touch and see. Examples - Monitor, Motherboard, HDD/SSD."
             },
             {
                 topic: "Software",
-                category: "software",
                 question: "What is software?",
-                answer: "Software is a set of instructions that tell the computer what to do. ou cannot touch software Example - Krita, Teams, Windows."
+                answer: "Software is a set of instructions that tell the computer what to do. You cannot touch software Example - Krita, Teams, Windows."
             },
-
-            // Component Explanations
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the HDD/SSD do?",
                 answer: "HDD (Hard Disk Drive) and SSD (Solid State Drive) are storage devices that store your data, programs, files, and operating system permanently. SSDs are faster but more expensive than HDDs. Data remains saved even when the computer is turned off."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does RAM do?",
                 answer: "RAM (Random Access Memory) is like the computer's short-term memory. When you turn off the computer, all data in RAM is lost."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the CPU do?",
                 answer: "The CPU (Central Processing Unit) is the 'brain' of the computer. It does all the thinking and calculations, and controls all other components."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the Motherboard do?",
                 answer: "The Motherboard is the main board that connects all components of the computer and allows them to work together."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the Power Supply do?",
                 answer: "The Power Supply Unit (PSU) provides power to all the parts of the computer. It distributes power safely to all parts of the computer."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the Graphics Card do?",
                 answer: "The Graphics Card (GPU) helps the computer display images and videos. It is important for gaming, video editing, and graphic design work."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the Cooling System do?",
                 answer: "The Cooling System keeps the computer from getting too hot. Example: CPU fan. Computer case fans."
             },
             {
                 topic: "Hardware Components",
-                category: "hardware",
                 question: "What does the Network Card do?",
-                answer: "The Network Card allows your computer to connect the internet and other computers. It can use wires (Ethernet) or can be wireless (WiFi)."
+                answer: "The Network Card allows your computer to connect to the internet and other computers. It can use wires (Ethernet) or can be wireless (WiFi)."
             },
-
-            // Clock Speed
             {
                 topic: "Performance",
-                category: "hardware",
                 question: "What is clock speed?",
                 answer: "Clock speed tells you how fast the CPU can work. It is measured in Hertz (Hz). For example, a CPU with 3 GHz (gigahertz) can perform 3 billion actions or cycles per second. Higher speed will give you a faster computer."
             },
             {
                 topic: "Performance",
-                category: "hardware",
                 question: "What does 1 GHz mean?",
                 answer: "1 GHz (gigahertz) means the CPU can do one billion actions every second. Modern CPUs typically run at speeds between 2-5 GHz."
             },
-
-            // Capacity Units
             {
                 topic: "Data Storage Units",
-                category: "storage",
                 question: "Order these units from SMALLEST to LARGEST:\nGB, KB, PB, TB, MB",
                 answer: "Correct order (smallest to largest):\nKB → MB → GB → TB → PB\n\nKilobyte → Megabyte → Gigabyte → Terabyte → Petabyte"
             },
             {
                 topic: "Data Storage Units",
-                category: "storage",
                 question: "Order these units from LARGEST to SMALLEST:\nMB, TB, KB, PB, GB",
                 answer: "Correct order (largest to smallest):\nPB → TB → GB → MB → KB\n\nPetabyte → Terabyte → Gigabyte → Megabyte → Kilobyte"
             },
             {
                 topic: "Data Storage Units",
-                category: "storage",
                 question: "How many bytes are in 1 KB?\nHow many KB are in 1 MB?",
                 answer: "1 KB (Kilobyte) = 1,000 bytes\n1 MB (Megabyte) = 1,000 KB\n1 GB (Gigabyte) = 1,000 MB\n1 TB (Terabyte) = 1,000 GB\n1 PB (Petabyte) = 1,000 TB"
             },
             {
                 topic: "Data Storage Units",
-                category: "storage",
                 question: "Convert: 5,000 MB = ? GB",
                 answer: "5,000 MB = 5 GB\n\n(Divide by 1,000 to convert MB to GB)\n5,000 ÷ 1,000 = 5"
             },
             {
                 topic: "Data Storage Units",
-                category: "storage",
                 question: "Convert: 3 TB = ? GB",
                 answer: "3 TB = 3,000 GB\n\n(Multiply by 1,000 to convert TB to GB)\n3 × 1,000 = 3,000"
             },
-
-            // Peripherals
             {
                 topic: "Peripherals",
-                category: "peripherals",
                 question: "What are computer peripherals?",
                 answer: "Peripherals are external devices that connect to a computer to make it more useful. Examples include keyboards, mice, printers, and speakers."
             },
             {
                 topic: "Peripherals",
-                category: "peripherals",
                 question: "What are INPUT peripherals? Give 3 examples.",
                 answer: "Input peripherals are devices that send data TO the computer.\n\nExamples:\n• Keyboard - enters text\n• Mouse - controls pointer\n• Microphone - inputs audio\n• Scanner - inputs images\n• Drawing tablet - inputs Sophia's masterpieces"
             },
             {
                 topic: "Peripherals",
-                category: "peripherals",
                 question: "What are OUTPUT peripherals? Give 3 examples.",
                 answer: "Output peripherals are devices that receive data FROM the computer.\n\nExamples:\n• Monitor - displays graphics\n• Printer - prints documents\n• Speakers, Headphones - make sound"
             },
             {
                 topic: "Peripherals",
-                category: "peripherals",
                 question: "What are external storage devices? Give 2 examples.",
                 answer: "External storage devices are portable devices that help store extra data and transfer data between computers.\n\nExamples:\n• USB Flash Drive - small, portable storage\n• External Hard Drive\n• SD Cards - removable storage for cameras/phones"
             },
-
-            // Storage Types
             {
                 topic: "Storage Media",
-                category: "storage",
                 question: "What is optical storage? How does it work?",
                 answer: "Optical storage uses lasers to read and write data on discs.\n\nExamples: CDs, DVDs, Blu-ray discs"
             },
             {
                 topic: "Storage Media",
-                category: "storage",
                 question: "What is magnetic storage? How does it work?",
                 answer: "Data is saved using magnetic disks.\n\nExamples: Hard Disk Drives (HDDs)"
             },
             {
                 topic: "Storage Media",
-                category: "storage",
                 question: "What is flash storage? How does it work?",
-                answer: "Flash storage stored data electronically. It is faster and more reliable.\n\nExamples: USB drives\n\nAdvantages: Very fast, reliable and portable\n"
+                answer: "Flash storage stores data electronically. It is faster and more reliable.\n\nExamples: USB drives\n\nAdvantages: Very fast, reliable and portable"
             },
-
-            // Primary and Secondary Storage
             {
                 topic: "Storage Types",
-                category: "storage",
                 question: "What is PRIMARY storage?",
-                answer: "Primary storage is memory that the CPU can access directly and quickly. It loses data when power is off.\n\nExample: RAM (Random Access Memory)\n\nCharacteristics:\n• Very fast access\n• Data is lost when computer in turned off\n•"
+                answer: "Primary storage is memory that the CPU can access directly and quickly. It loses data when power is off.\n\nExample: RAM (Random Access Memory)\n\nCharacteristics:\n• Very fast access\n• Data is lost when computer is turned off"
             },
             {
                 topic: "Storage Types",
-                category: "storage",
                 question: "What is SECONDARY storage?",
-                answer: "Secondary storage is permanent storage for data, programs, and files. It keeps data even when the computer is turned off.\n\nExamples: HDD, SSD\n\nCharacteristics:\n• Keeps data without power)\n•"
+                answer: "Secondary storage is permanent storage for data, programs, and files. It keeps data even when the computer is turned off.\n\nExamples: HDD, SSD\n\nCharacteristics:\n• Keeps data without power"
             },
             {
                 topic: "Storage Types",
-                category: "storage",
                 question: "What's the difference between PRIMARY and SECONDARY storage?",
                 answer: "PRIMARY (RAM):\n• Temporary\n• Very fast\n• Currently active data\n• Loses data when powered off\n\nSECONDARY (HDD/SSD):\n• Permanent\n• Slower\n• Larger capacity\n• Keeps data when computer turned off"
             }
@@ -438,7 +345,6 @@
             const card = flashcards[index];
             const flashcard = document.getElementById('flashcard');
             
-            // Reset flip state
             flashcard.classList.remove('flipped');
             isFlipped = false;
             
@@ -446,18 +352,8 @@
             document.getElementById('question').textContent = card.question;
             document.getElementById('answer').textContent = card.answer;
             
-            // Handle image if present
-            const imageContainer = document.getElementById('image-container');
-            if (card.image) {
-                imageContainer.innerHTML = `<div class="component-image">${card.image}</div>`;
-            } else {
-                imageContainer.innerHTML = '';
-            }
-            
-            // Update progress
             document.getElementById('progress').textContent = `${index + 1} / ${flashcards.length}`;
             
-            // Update navigation buttons
             document.getElementById('prevBtn').disabled = index === 0;
             document.getElementById('nextBtn').disabled = index === flashcards.length - 1;
         }
@@ -482,7 +378,6 @@
             }
         }
 
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextCard();
             if (e.key === 'ArrowLeft') previousCard();
@@ -492,7 +387,6 @@
             }
         });
 
-        // Initialize
         displayCard(0);
     </script>
 </body>
