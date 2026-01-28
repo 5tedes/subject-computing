@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Test - Internet Safety & Security</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-card.correct {
+            border-left-color: #198754;
+            background: #d1e7dd;
+        }
+
+        .question-card.incorrect {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #e8e8ff;
+        }
+
+        .option.correct-answer {
+            border-color: #198754;
+            background: #d1e7dd;
+        }
+
+        .option.wrong-answer {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option-letter {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .option.correct-answer .option-letter {
+            background: #198754;
+        }
+
+        .option.wrong-answer .option-letter {
+            background: #dc3545;
+        }
+
+        .option-text {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #0f5132 0%, #198754 100%);
+            border-radius: 15px;
+            margin-top: 30px;
+            color: white;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-text {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+
+        .feedback {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .retry-btn {
+            background: white;
+            color: #198754;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .retry-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 8px;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .test-container {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .option {
+                padding: 12px 15px;
+            }
+
+            .score {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ Practice Test</h1>
+        <p class="subtitle">Internet Safety, Cyber Security & Encryption</p>
+
+        <div class="test-container">
+            <form id="quizForm">
+                <!-- Question 1 -->
+                <div class="question-card" data-question="1">
+                    <span class="question-number">Question 1</span>
+                    <p class="question-text">Which is the best example of a safe social media practice?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Posting your location in real time</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Keeping your account private and reviewing tagged posts</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Sharing password hints with friends</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Accepting all follow requests</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Using privacy settings and reviewing tagged posts helps protect your digital footprint and personal information.</div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" data-question="2">
+                    <span class="question-number">Question 2</span>
+                    <p class="question-text">Which password is strongest?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">dragon123</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">summer2024</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Leaf!River7_Hill</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">qwerty</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Strong passwords include upper-case letters, lower-case letters, numbers, and special characters. "Leaf!River7_Hill" has all of these.</div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" data-question="3">
+                    <span class="question-number">Question 3</span>
+                    <p class="question-text">What is a common sign of phishing?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Correct spelling throughout</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Generic greeting like 'Dear user' and urgent threats</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Personalised details only you would know</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Email domain matches the real company exactly</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Phishing emails often use generic greetings and create urgency to trick you into clicking links quickly without thinking.</div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" data-question="4">
+                    <span class="question-number">Question 4</span>
+                    <p class="question-text">Which is NOT a good password habit?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Using a different password for each site</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Turning on two-factor authentication</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Reusing your favorite password everywhere</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Using a password manager</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Reusing passwords is dangerous because if one account is hacked, all your other accounts become vulnerable too.</div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card" data-question="5">
+                    <span class="question-number">Question 5</span>
+                    <p class="question-text">Which measure best reduces malware risk when downloading software?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Disabling your firewall</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Downloading from official sources and scanning files</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Ignoring update prompts</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Clicking pop-up ads that offer 'free cleaners'</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Always download from official, trusted sources and scan files with anti-malware software before opening them.</div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card" data-question="6">
+                    <span class="question-number">Question 6</span>
+                    <p class="question-text">What is a digital footprint?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">A type of computer virus</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Information about you that exists online from your activity</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">A keyboard shortcut</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">The physical location of a server</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Your digital footprint includes all the information about you online from posts, photos, comments, likes, and profiles.</div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-card" data-question="7">
+                    <span class="question-number">Question 7</span>
+                    <p class="question-text">What type of malware pretends to be useful software?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Virus</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Worm</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Trojan</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Adware</span>
+                        </label>
+                    </div>
+                    <div class="explanation">A Trojan disguises itself as legitimate software to trick users into installing it, just like the Trojan Horse from Greek mythology.</div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-card" data-question="8">
+                    <span class="question-number">Question 8</span>
+                    <p class="question-text">What type of malware locks your files and demands money?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Spyware</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Adware</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Ransomware</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Worm</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Ransomware encrypts your files and demands payment to unlock them. This is why regular backups are essential!</div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-card" data-question="9">
+                    <span class="question-number">Question 9</span>
+                    <p class="question-text">What does a firewall do?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Speeds up your internet connection</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Blocks unauthorised access to your computer</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Stores your passwords</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Creates backup copies of files</span>
+                        </label>
+                    </div>
+                    <div class="explanation">A firewall acts as a barrier between your computer and the internet, blocking unauthorised access and stopping malware from spreading.</div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-card" data-question="10">
+                    <span class="question-number">Question 10</span>
+                    <p class="question-text">What type of malware spreads across networks automatically without user action?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Worm</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Virus</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Trojan</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Adware</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Worms copy themselves automatically and spread across networks very quickly without needing the user to do anything.</div>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question-card" data-question="11">
+                    <span class="question-number">Question 11</span>
+                    <p class="question-text">What is a brute force attack?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q11" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">A computer trying thousands of passwords per second</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Physically breaking into a computer</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Sending fake emails</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Installing a firewall</span>
+                        </label>
+                    </div>
+                    <div class="explanation">A brute force attack uses a computer to try thousands or millions of password combinations per second until it finds the right one.</div>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question-card" data-question="12">
+                    <span class="question-number">Question 12</span>
+                    <p class="question-text">What is "shoulder surfing"?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q12" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">A type of malware</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Someone watching you type your password in public</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">A social media platform</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">A type of encryption</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Shoulder surfing is when someone looks over your shoulder to see your password or PIN as you type it in public places.</div>
+                </div>
+
+                <!-- Question 13 -->
+                <div class="question-card" data-question="13">
+                    <span class="question-number">Question 13</span>
+                    <p class="question-text">Why are software updates important for security?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q13" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">They make your computer look nicer</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">They fix security weaknesses that hackers can exploit</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">They delete your files</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">They slow down your computer</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Updates patch security vulnerabilities (weaknesses) in software that hackers could use to attack your computer.</div>
+                </div>
+
+                <!-- Question 14 -->
+                <div class="question-card" data-question="14">
+                    <span class="question-number">Question 14</span>
+                    <p class="question-text">What does spyware do?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q14" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Shows unwanted advertisements</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">Locks your files until you pay</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Secretly monitors your activity and collects personal data</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Speeds up your computer</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Spyware runs hidden in the background, spying on what you do and collecting passwords and personal information.</div>
+                </div>
+
+                <!-- Question 15 -->
+                <div class="question-card" data-question="15">
+                    <span class="question-number">Question 15</span>
+                    <p class="question-text">What is two-factor authentication (2FA)?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q15" value="A">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">Using two different passwords</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="B">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">An extra verification step after entering your password</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="C">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">A type of firewall</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="D">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">Sharing your account with two people</span>
+                        </label>
+                    </div>
+                    <div class="explanation">Two-factor authentication adds an extra step to verify your identity, like entering a code sent to your phone after your password.</div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="button" class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Answers</button>
+                </div>
+
+                <div class="results" id="results">
+                    <div class="score" id="score">0/15</div>
+                    <div class="score-text" id="scoreText">You scored 0 out of 15</div>
+                    <div class="feedback" id="feedback">Keep practicing!</div>
+                    <button type="button" class="retry-btn" onclick="retryQuiz()">Try Again</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const answers = {
+            q1: 'B',
+            q2: 'C',
+            q3: 'B',
+            q4: 'C',
+            q5: 'B',
+            q6: 'B',
+            q7: 'C',
+            q8: 'C',
+            q9: 'B',
+            q10: 'A',
+            q11: 'A',
+            q12: 'B',
+            q13: 'B',
+            q14: 'C',
+            q15: 'B'
+        };
+
+        // Add click handlers to options
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionCard = this.closest('.question-card');
+                questionCard.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                this.querySelector('input').checked = true;
+            });
+        });
+
+        function submitQuiz() {
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = `q${i}`;
+                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+                const questionCard = document.querySelector(`[data-question="${i}"]`);
+                const options = questionCard.querySelectorAll('.option');
+                const explanation = questionCard.querySelector('.explanation');
+
+                // Reset styles
+                options.forEach(opt => {
+                    opt.classList.remove('correct-answer', 'wrong-answer');
+                });
+                questionCard.classList.remove('correct', 'incorrect');
+
+                if (selected) {
+                    const userAnswer = selected.value;
+                    const correctAnswer = answers[questionName];
+
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        questionCard.classList.add('correct');
+                        selected.parentElement.classList.add('correct-answer');
+                    } else {
+                        questionCard.classList.add('incorrect');
+                        selected.parentElement.classList.add('wrong-answer');
+                        // Show correct answer
+                        options.forEach(opt => {
+                            if (opt.querySelector('input').value === correctAnswer) {
+                                opt.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                } else {
+                    questionCard.classList.add('incorrect');
+                    // Show correct answer
+                    options.forEach(opt => {
+                        if (opt.querySelector('input').value === answers[questionName]) {
+                            opt.classList.add('correct-answer');
+                        }
+                    });
+                }
+
+                // Show explanation
+                explanation.classList.add('show');
+            }
+
+            // Display results
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('score').textContent = `${score}/${totalQuestions}`;
+            document.getElementById('scoreText').textContent = `You scored ${score} out of ${totalQuestions} (${percentage}%)`;
+
+            let feedback = '';
+            if (percentage === 100) {
+                feedback = 'Perfect score! Excellent work! 🌟';
+            } else if (percentage >= 80) {
+                feedback = 'Great job! You know this topic well! 🎉';
+            } else if (percentage >= 60) {
+                feedback = 'Good effort! Review the topics you missed. 📚';
+            } else if (percentage >= 40) {
+                feedback = 'Keep studying! Go through the flashcards again. 💪';
+            } else {
+                feedback = 'More practice needed. Review the flashcards carefully! 📖';
+            }
+            document.getElementById('feedback').textContent = feedback;
+
+            document.getElementById('results').classList.add('show');
+            document.getElementById('submitBtn').disabled = true;
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function retryQuiz() {
+            // Reset all selections
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
+            });
+
+            // Reset styles
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct-answer', 'wrong-answer');
+            });
+
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+            });
+
+            document.querySelectorAll('.explanation').forEach(exp => {
+                exp.classList.remove('show');
+            });
+
+            // Hide results
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('submitBtn').disabled = false;
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
